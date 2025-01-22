@@ -46,13 +46,17 @@ export class AppComponent implements OnInit{
     });
   }
 
-    onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
-      this.getAll().subscribe(
-
-        rooms => {console.log(Object.values(rooms)[0]);this.rooms=<Room[]>Object.values(rooms)[0]; }
-
-
-      );
+    onSubmit({ value, valid }: { value: Roomsearch; valid: boolean }) {
+      this.getAll().subscribe((rooms) => {
+        const fetchedRooms = <Room[]>Object.values(rooms)[0]; // Extract room data from response
+        // Map the rooms to include calculated prices
+        this.rooms = fetchedRooms.map((room) => ({
+          ...room,
+          priceCAD: (parseFloat(room.price) * 1.3).toFixed(2), // Example conversion rate for CAD
+          priceEUR: (parseFloat(room.price) * 0.9).toFixed(2), // Example conversion rate for EUR
+        }));
+        console.log(this.rooms); // Log to verify the mapped data
+      });
     }
     reserveRoom(value:string){
       this.request = new ReserveRoomRequest(value, this.currentCheckInVal, this.currentCheckOutVal);
