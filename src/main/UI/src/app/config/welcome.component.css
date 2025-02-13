@@ -1,0 +1,26 @@
+.welcome-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  margin: 20px auto;
+  width: 60%;
+}
+
+.welcome-container h3 {
+  font-size: 24px;
+  color: #003366;
+  margin-bottom: 15px;
+}
+
+.welcome-container p {
+  font-size: 18px;
+  color: #444;
+  margin: 5px 0;
+}
+
+.welcome-container strong {
+  color: #003366;
+}
