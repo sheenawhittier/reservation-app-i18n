@@ -1,5 +1,6 @@
 package edu.wgu.d387_sample_code.rest;
 
+import edu.wgu.d387_sample_code.service.TimeZoneService;
 import edu.wgu.d387_sample_code.service.WelcomeMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +16,19 @@ import java.util.concurrent.*;
 @RequestMapping("/api")
 public class WelcomeController {
 
+    @Autowired
+    private TimeZoneService timeZoneService;
+
     @GetMapping("/welcome")
-    public ResponseEntity<Map<String, String>> getWelcomeMessages() throws ExecutionException, InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-
-        Callable<String> fetchEnglishMessage = () -> "Welcome to Landon Hotel!";
-        Callable<String> fetchFrenchMessage = () -> "Bienvenue à l'hôtel Landon!";
-
-        Future<String> englishFuture = executor.submit(fetchEnglishMessage);
-        Future<String> frenchFuture = executor.submit(fetchFrenchMessage);
-
+    public Map<String, String> getWelcomeMessage() {
         Map<String, String> messages = new HashMap<>();
-        messages.put("English", englishFuture.get());
-        messages.put("French", frenchFuture.get());
-        messages.put("Presentation", "Landon Hotel is committed to providing the best experience!");
+        messages.put("English", "Welcome to Landon Hotel!");
+        messages.put("French", "Bienvenue à l'hôtel Landon!");
 
-        executor.shutdown();
-        return ResponseEntity.ok(messages);
+        // Add time zone information to the presentation message
+        String presentationMessage = timeZoneService.getPresentationTimes();
+        messages.put("Presentation", presentationMessage);
+
+        return messages;
     }
 }
-
