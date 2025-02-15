@@ -1,1 +1,46 @@
-/* You can add global styles to this file, and also import other style files */
+/* General styling for form container */
+.row {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Form input styling */
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.form-label {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+/* Submit button styling */
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 1.2rem;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+/* Center content horizontally and vertically */
+.text-center {
+  text-align: center;
+}
+
+.justify-content-center {
+  display: flex;
+  justify-content: center;
+}
+
