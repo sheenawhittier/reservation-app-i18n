@@ -17,7 +17,7 @@ RUN node -v && npm -v && ng version
 COPY src/main/UI/ ./
 
 # Build the Angular app in production mode
-RUN ng build --configuration production
+RUN ng build --configuration production --output-path=dist
 
 # Stage 2: Spring Boot Build
 FROM openjdk:17-jdk-slim AS spring-boot-build
@@ -38,7 +38,7 @@ WORKDIR /app
 COPY --from=spring-boot-build /app/app.jar ./app.jar
 
 # Copy the Angular build output from the angular-build stage
-COPY --from=angular-build /app/dist/ /app/dist/
+COPY --from=angular-build /app/dist /app/static
 
 # Expose the port for the application
 EXPOSE 8080
