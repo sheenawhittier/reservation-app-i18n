@@ -14,32 +14,33 @@ jobs:
           java-version: '17'
           cache: maven
 
-      # Sanity info and prove we're at the repo root
-      - name: Show workspace
-        run: |
-          pwd
-          ls -la
+      # --- New: Node & Angular for the UI step Maven triggers ---
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'   # or '20' LTS
 
-      # Normalize the Maven wrapper if it exists (Windows CRLF + exec bit)
-      - name: Prepare Maven wrapper
+      - name: Install Angular CLI globally
+        run: npm i -g @angular/cli@17
+
+      - name: Install UI deps (if UI folder exists)
+        working-directory: src/main/UI
         run: |
-          if [ -f mvnw ]; then
-            echo "Found mvnw"
-            sed -i 's/\r$//' mvnw || true
-            chmod +x mvnw || true
-            ./mvnw -v
-          else
-            echo "mvnw not found; will use system Maven"
+          if [ -f package.json ]; then
+            npm ci
           fi
+      # ----------------------------------------------------------
 
-      # Build (use wrapper if present; otherwise the runner's Maven)
       - name: Build (skip tests)
         run: |
           if [ -f mvnw ]; then
-            ./mvnw -B -ntp clean verify -DskipTests -DskipIT -DskipITs -DskipIntegrationTests
+            sed -i 's/\r$//' mvnw || true
+            chmod +x mvnw || true
+            ./mvnw -B -ntp clean verify -DskipTests
           else
-            mvn -B -ntp clean verify -DskipTests -DskipIT -DskipITs -DskipIntegrationTests
+            mvn -B -ntp clean verify -DskipTests
           fi
+
 
 
 
