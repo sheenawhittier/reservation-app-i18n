@@ -1,3 +1,5 @@
+![Java CI](https://github.com/sheenawhittier/reservation-app-i18n/actions/workflows/build.yml/badge.svg)
+
 # Reservation App (i18n + Docker)
 
 Spring Boot reservation service with **internationalization** and a **containerized** runtime.
