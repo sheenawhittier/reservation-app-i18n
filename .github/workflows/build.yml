@@ -14,7 +14,10 @@ jobs:
           java-version: '17'
           cache: maven
 
-      
-      - name: Build with Maven (wrapper)
-        run: ./mvnw -B -DskipTests clean verify
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
+      - name: Build with Maven (wrapper, skip tests)
+        run: ./mvnw -B clean verify -DskipTests -DskipITs -DskipIntegrationTests
+
 
