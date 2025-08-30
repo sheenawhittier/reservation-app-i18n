@@ -14,13 +14,33 @@ jobs:
           java-version: '17'
           cache: maven
 
+      # Sanity info and prove we're at the repo root
+      - name: Show workspace
+        run: |
+          pwd
+          ls -la
+
+      # Normalize the Maven wrapper if it exists (Windows CRLF + exec bit)
       - name: Prepare Maven wrapper
         run: |
-          chmod +x mvnw
-          sed -i 's/\r$//' mvnw
+          if [ -f mvnw ]; then
+            echo "Found mvnw"
+            sed -i 's/\r$//' mvnw || true
+            chmod +x mvnw || true
+            ./mvnw -v
+          else
+            echo "mvnw not found; will use system Maven"
+          fi
 
-      - name: Build with Maven (wrapper, skip tests)
-        run: ./mvnw -B clean verify -DskipTests -DskipITs -DskipIntegrationTests
+      # Build (use wrapper if present; otherwise the runner's Maven)
+      - name: Build (skip tests)
+        run: |
+          if [ -f mvnw ]; then
+            ./mvnw -B -ntp clean verify -DskipTests -DskipIT -DskipITs -DskipIntegrationTests
+          else
+            mvn -B -ntp clean verify -DskipTests -DskipIT -DskipITs -DskipIntegrationTests
+          fi
+
 
 
 
